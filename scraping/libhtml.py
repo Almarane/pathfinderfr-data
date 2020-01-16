@@ -29,7 +29,16 @@ def extractText(list):
     for el in list:
         text += html2text(el)
         html += html2simplehtml(el)
-    #html = re.sub('¶', '', re.sub('(?:\n|\r|\t)', '', re.sub('(?:<p>\s*</p>)+', '', re.sub('<p><h2>', '<h2>', re.sub('</h2></p>', '</h2>', re.sub('<p>\s*<table>', '<table>', re.sub('</table>\s*</p>', '</table>', re.sub('(?:<p>\s*)+', '<p>', re.sub('(?:</p>\s*)+', '</p>', "<p>" + html + "</p>")))))))))
+    html = re.sub('(?:\s*<br/>\s*)', '<br/>', html)
+    html = re.sub('(?:\s*<br/>\s*)*</table>(?:\s*<br/>\s*)*', '</table>', html)
+    html = re.sub('(?:\s*<br/>\s*)*<table>(?:\s*<br/>\s*)*', '<table>', html)
+    html = re.sub('(?:\s*<br/>\s*)*</h2>(?:\s*<br/>\s*)*', '</h2>', html)
+    html = re.sub('(?:\s*<br/>\s*)*<h2>(?:\s*<br/>\s*)*', '<h2>', html)
+    html = re.sub('(?:<br/>){3,}', '<br/><br/>', html)
+    html = re.sub('(?:\n|\r|\t|¶)', '', html)
+    html = re.sub('\s+', ' ', html)
+    html = re.sub('^(?:<br/>|\s*)+', '', html)
+    html = re.sub('(?:<br/>|\s*)+$', '', html)
     return [text, html]
 
 
@@ -106,28 +115,43 @@ def table2html(tableInput):
     except:
         table = tableInput
 
-    for tr in table.find_all('tr'):
-        if tr.has_attr('class') and tr['class'][0] == "titre":
-            typeTr = "th"
-        else:
-            typeTr = "tr"
-        
-        text += "<" + typeTr + ">"
-        for td in tr.find_all('td'):
-            text += html2simplehtml(td)
-        
-        text += "</" + typeTr + ">"
+    caption = ""
+    header = ""
+    body = ""
 
+    nbSousTitres = 0
+    posSousTitres = 0
+
+    for element in table.children:
+        if element.name == 'caption':
+            caption += html2simplehtml(element)
+        if element.name == 'tr':
+            textTR = "<tr>"
+            for td in element.find_all('td'):
+                textTR += html2simplehtml(td)
+            textTR += "</tr>"
+            if element.has_attr('class') and ("titre" in element['class'] or "soustitre" in element['class']):
+                header += textTR
+            else:
+                body += textTR
+    
+    if caption != "":
+        text += caption
+    if header != "":
+        text += "<thead>" + header + "</thead>"
+    if body != "":
+        text += "<tbody>" + body + "</tbody>"
+    
     text += "</table>"
-    text = re.sub('(?:<td>)+', '<td>', re.sub('(?:</td>)+', '</td>', text))
-    return text
 
+    return text
+    
 def html2text(htmlEl, skipDiv = True):
-    if htmlEl.name is None or htmlEl.name == 'a':
+    if htmlEl.name is None:
         if htmlEl.string is None:
             return ""
         else:
-            return htmlEl.string
+            return ' ' + htmlEl.string + ' '
     # ignore <sup>
     elif htmlEl.name == 'sup':
         return ""
@@ -165,55 +189,78 @@ def html2text(htmlEl, skipDiv = True):
         return ""
 
 def html2simplehtml(htmlEl):
+    try:
+        for a in htmlEl.findAll('a'):
+            a.replaceWithChildren()
+    except:
+        pass
     if htmlEl.name is None or htmlEl.name == 'a':
         if htmlEl.string is None:
             return ""
         else:
             return htmlEl.string
     # ignore <sup> et <img>
-    elif htmlEl.name == 'sup' or htmlEl.name == 'img':
+    elif htmlEl.name == 'img':
         return ""
     elif htmlEl.name == 'div':
-        soup = BeautifulSoup("<p></p>", features="lxml")
-        tag = soup.p
 
-        text = ""
+        text = "<br/><br/>"
         for c in htmlEl.children:
             text += html2simplehtml(c)
         
-        tag.append(text)
-        return repr(tag)
-    # corrige les descendants de <i>, <b> et <td>
-    elif htmlEl.name == 'i' or htmlEl.name == 'b' or htmlEl.name == 'td' or htmlEl.name == 'p':
-        text = "<" + htmlEl.name + ">"
-        for c in htmlEl.children:
-            text += html2simplehtml(c)
-        
-        text += "</" + htmlEl.name + ">"
         return text
-    elif htmlEl.name == 'br':
-        if htmlEl.parent.name != 'i' and htmlEl.parent.name != 'td':
-            return ""
-        return "</p><p>"
+    # corrige les descendants de <i>, <b> et <td>
+    elif htmlEl.name == 'i' or htmlEl.name == 'b'  or htmlEl.name == 'caption' or htmlEl.name == 'sup' or htmlEl.name == 'li' or htmlEl.name == 'ul':
+        htmlEl.attrs.clear()
+        if htmlEl.string is not None:
+            text = ''
+            for c in htmlEl.children:
+                text += html2simplehtml(c)
+            htmlEl.string.replace_with(text)
+        else:
+            htmlEl.string = htmlEl.text.strip()
+        return repr(htmlEl)
+    elif htmlEl.name == 'td':
+        colspan = 0
+        rowspan = 0
+        if "colspan" in htmlEl.attrs:
+            colspan = int(htmlEl['colspan'])
+        if "rowspan" in htmlEl.attrs:
+            rowspan = int(htmlEl['rowspan'])
+
+        htmlEl.attrs.clear()
+        if htmlEl.string is not None:
+            text = ''
+            for c in htmlEl.children:
+                text += html2simplehtml(c)
+            htmlEl.string.replace_with(text)
+        else:
+            htmlEl.string = htmlEl.text.strip()
+
+        if colspan > 0:
+            htmlEl['colspan'] = colspan
+        if rowspan > 0:
+            htmlEl['rowspan'] = rowspan
+        return repr(htmlEl)
     elif htmlEl.name == 'center':
         return table2html(htmlEl.find('table'))
     elif htmlEl.name == 'table':
         return table2html(htmlEl)
-    elif htmlEl.name == 'ul':
-        text = "</p><ul>"
-        for li in htmlEl.find_all('li'):
-            text += "<li>" + li.text + "</li>"
-        return text + "</ul><p>"
     elif htmlEl.name == "h2" or htmlEl.name == "h3" or htmlEl.name == "h4":
-        soup = BeautifulSoup("<h2></h2>", features="lxml")
-        tag = soup.h2
-        tag.append(htmlEl.text)
-        return repr(tag)
+        htmlEl.attrs.clear()
+        htmlEl.name = "h2"
+        if htmlEl.string is not None:
+            text = ''
+            for c in htmlEl.children:
+                text += html2simplehtml(c)
+            htmlEl.string.replace_with(text)
+        else:
+            htmlEl.string = htmlEl.text.strip()
+        return repr(htmlEl)
     elif htmlEl.name == "abbr":
         return htmlEl.text
-    elif htmlEl.name == "img":
-        return ""
     else:
+        htmlEl.attrs.clear()
         return repr(htmlEl)
   
 #
@@ -597,8 +644,11 @@ def mergeYAML(origPath, matchOn, order, header, yaml2merge, ignoreFields = []):
                 #print("Match found for %s with %s" % (el['Nom'], liste[idx]['Nom']))
                 old = liste[idx]
                 liste[idx] = el
-                for f in ignoreFields:
-                    liste[idx][f] = old[f]
+                try:
+                    for f in ignoreFields:
+                        liste[idx][f] = old[f]
+                except:
+                    pass
                 liste[idx]['first'] = True
                 found = True
                 break
@@ -696,11 +746,14 @@ def mergeNedb(origPath, matchOn, order, yaml2merge, ignoreFields = []):
                     match = False
                     break
             if match:
-                #print("Match found for %s with %s" % (el['Nom'], liste[idx]['Nom']))
+                print("Match found for %s with %s" % (el['nom'], liste[idx]['nom']))
                 old = liste[idx]
                 liste[idx] = el
-                for f in ignoreFields:
-                    liste[idx][f] = old[f]
+                try:
+                    for f in ignoreFields:
+                        liste[idx][f] = old[f]
+                except:
+                    pass
                 liste[idx]['first'] = True
                 found = True
                 break

@@ -9,7 +9,7 @@ import re
 from bs4 import BeautifulSoup
 from lxml import html
 
-from libhtml import cleanSectionName, cleanProperty, cleanName, html2text, getValidSource, mergeYAML
+from libhtml import cleanSectionName, cleanProperty, cleanName, html2text, getValidSource, mergeYAML, mergeNedb
 
 ## Configurations pour le lancement
 MOCK_LIST = None
@@ -38,9 +38,58 @@ MATCHNEDB = ['nom']
 
 FEAT_REFS = []
 
+def convert4nedb(don):
+    donNedb = {}
+
+    donNedb[u'nom']=don[u'Nom']
+    donNedb[u'reference']=don[u'Référence']
+
+    try:
+        donNedb['categorie']=don["Catégorie"]
+    except:
+        pass
+
+    try:
+        donNedb['conditions']=don["Conditions"]
+    except:
+        pass
+
+    try:
+        donNedb['conditionsRefs']=don["ConditionsRefs"]
+    except:
+        pass
+
+    try:
+        donNedb['avantage']=don["Avantage"]
+    except:
+        pass
+
+    try:
+        donNedb['normal']=don["Normal"]
+    except:
+        pass
+
+    try:
+        donNedb['special']=don["Spécial"]
+    except:
+        pass
+
+    try:
+        donNedb['source']=don["Source"]
+    except:
+        pass
+
+    try:
+        donNedb['source']=don["Source"]
+    except:
+        pass
+
+    return donNedb
+
 for URL in URLS:
     
     liste = []
+    listeNedb = []
 
     print("Extraction des dons: " + URL)
 
@@ -72,7 +121,7 @@ for URL in URLS:
         tds = tr.find_all('td')
         avantageShort = tds[len(tds)-1].text
         
-        print("Don %s" % title)
+        #print("Don %s" % title)
         pageURL = "http://www.pathfinder-fr.org/Wiki/" + link
         FEAT_REFS.append(link)
         
@@ -138,13 +187,14 @@ for URL in URLS:
         
         # ajouter don
         liste.append(don)
+
+        # conversion du sort pour nedb
+        listeNedb.append(convert4nedb(don))
         
         if MOCK_DON:
             break
 
-
-    print("Fusion avec fichier YAML existant...")
-
     HEADER = ""
 
     mergeYAML("../data/dons.yml", MATCH, FIELDS, HEADER, liste)
+    mergeNedb("../data/dons.db", MATCHNEDB, FIELDSNEDB, listeNedb)

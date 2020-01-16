@@ -25,6 +25,7 @@ MATCH = ['Nom']
 
 FIELDSNEDB = ['nom', 'attribut', 'malusArmure', 'formation', 'description', 'descriptionHTML', 'reference', '_id' ]
 MATCHNEDB = ['nom']
+IGNORENEDB = ['_id']
 
 
 liste = []
@@ -83,7 +84,9 @@ for l in list:
     
     print("Processing %s" % title)
     pageURL = "http://www.pathfinder-fr.org/Wiki/" + link
-    
+    '''pageURL = "https://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Art%20de%20la%20magie.ashx"
+    print(pageURL)
+'''
     sort['Nom']=title
     sort['Référence']=pageURL
     
@@ -142,4 +145,4 @@ HEADER = ""
 
 mergeYAML("../data/competences.yml", MATCH, FIELDS, HEADER, liste)
 
-mergeNedb("../data/competences.db", MATCHNEDB, FIELDSNEDB, listeNedb)
+mergeNedb("../data/competences.db", MATCHNEDB, FIELDSNEDB, listeNedb, IGNORENEDB)

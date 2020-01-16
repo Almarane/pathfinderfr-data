@@ -44,7 +44,8 @@ MOCK_SL = None
 print("Importation des sorts...")
 
 sorts = []
-with open("../data/spells.yml", 'r') as stream:
+db = "../data/spells.yml"
+with open(db, 'r', encoding='utf8') as stream:
     try:
         sorts = yaml.safe_load(stream)
     except yaml.YAMLError as exc:
@@ -57,10 +58,11 @@ with open("../data/spells.yml", 'r') as stream:
 def findSpell(url):
     url = url.lower()
     for s in sorts:
-        if url in s['Référence'].lower():
-            return s
+        try:
+            if url in s['Référence'].lower():
+                return s
     print("Not found: " + url)
-    exit(1)
+    ## Ne pas quitter : permet de continuer tout en affichant les sorts en erreur pour traiter au moins ceux qui ont été trouvés
 
 ##
 ## Ajoute une classe au sort (niveau)
@@ -146,6 +148,5 @@ for s in sorts:
     s['Niveau'] = levelToString(s['Niveau'])
     #print(s['Niveau'])
     
-print("Fusion avec fichier YAML existant...")
 HEADER = ""
-mergeYAML("../data/spells.yml", MATCH, FIELDS, HEADER, sorts)
+mergeYAML(db, MATCH, FIELDS, HEADER, sorts)
