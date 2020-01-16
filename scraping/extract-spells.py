@@ -141,8 +141,6 @@ def convert4nedb(sort):
     except:
         pass
 
-    
-    #sortNedb['_id'] = int(hashlib.md5(sortNedb['reference'].encode('utf-8')).hexdigest()[:8],16)
     return sortNedb
 
 # itération sur chaque page

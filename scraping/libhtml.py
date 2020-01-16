@@ -18,12 +18,26 @@ TYPE_FABRI = 3
 VALID_PROPS   = ["aura", "nls", "conditions", "emplacement", "poids", "prixalt"] 
 VALID_FABRICS = ["coût", "conditions"]
 
+#
+# cette fonction se charge d'extraire le texte de la partie HTML
+# en explorant certaines balises. Malheureusement, le format des
+# pages peut différer d'une fois à l'autre.
+#
+def extractText(list):
+    text = ""
+    html = ""
+    for el in list:
+        text += html2text(el)
+        html += html2simplehtml(el)
+    #html = re.sub('¶', '', re.sub('(?:\n|\r|\t)', '', re.sub('(?:<p>\s*</p>)+', '', re.sub('<p><h2>', '<h2>', re.sub('</h2></p>', '</h2>', re.sub('<p>\s*<table>', '<table>', re.sub('</table>\s*</p>', '</table>', re.sub('(?:<p>\s*)+', '<p>', re.sub('(?:</p>\s*)+', '</p>', "<p>" + html + "</p>")))))))))
+    return [text, html]
+
 
 #
 # cette fonction permet de sauter à l'élément recherché et retourne les prochains éléments
 #
 def jumpTo(html, afterTag, afterCond, elementText):
-    seps = html.find_all(afterTag, afterCond);
+    seps = html.find_all(afterTag, afterCond)
     for s in seps:
         if s.text.lower().strip().startswith(elementText.lower()):
             return s.next_siblings
@@ -82,11 +96,16 @@ def table2text(table):
 #
 # cette fonction nettoie un tableau pour en faire un html plus simple
 #
-def table2html(table):
+def table2html(tableInput):
+    table = tableInput
     if table is None:
         return ""
     text = "<table>"
-    first = True
+    try:
+        table = table.find_all('table')[0]
+    except:
+        table = tableInput
+
     for tr in table.find_all('tr'):
         if tr.has_attr('class') and tr['class'][0] == "titre":
             typeTr = "th"
@@ -95,7 +114,7 @@ def table2html(table):
         
         text += "<" + typeTr + ">"
         for td in tr.find_all('td'):
-            text += "<td>" + html2simplehtml(td) + "</td>"
+            text += html2simplehtml(td)
         
         text += "</" + typeTr + ">"
 
@@ -165,23 +184,27 @@ def html2simplehtml(htmlEl):
         tag.append(text)
         return repr(tag)
     # corrige les descendants de <i>, <b> et <td>
-    elif htmlEl.name == 'i' or htmlEl.name == 'b' or htmlEl.name == 'td':
-        text = ""
+    elif htmlEl.name == 'i' or htmlEl.name == 'b' or htmlEl.name == 'td' or htmlEl.name == 'p':
+        text = "<" + htmlEl.name + ">"
         for c in htmlEl.children:
             text += html2simplehtml(c)
         
-        htmlEl.string = text
-        return repr(htmlEl)
+        text += "</" + htmlEl.name + ">"
+        return text
     elif htmlEl.name == 'br':
+        if htmlEl.parent.name != 'i' and htmlEl.parent.name != 'td':
+            return ""
         return "</p><p>"
     elif htmlEl.name == 'center':
         return table2html(htmlEl.find('table'))
+    elif htmlEl.name == 'table':
+        return table2html(htmlEl)
     elif htmlEl.name == 'ul':
         text = "</p><ul>"
         for li in htmlEl.find_all('li'):
             text += "<li>" + li.text + "</li>"
         return text + "</ul><p>"
-    elif htmlEl.name == "h2" or htmlEl.name == "h3":
+    elif htmlEl.name == "h2" or htmlEl.name == "h3" or htmlEl.name == "h4":
         soup = BeautifulSoup("<h2></h2>", features="lxml")
         tag = soup.h2
         tag.append(htmlEl.text)
@@ -522,6 +545,8 @@ def extractBD_Type2(html):
 # - modification des existantes (merge) sur la base du nom
 #
 def mergeYAML(origPath, matchOn, order, header, yaml2merge, ignoreFields = []):
+
+    print("Fusion avec fichier YAML existant...")
     
     liste = []
     
@@ -621,6 +646,9 @@ def mergeYAML(origPath, matchOn, order, header, yaml2merge, ignoreFields = []):
 # - modification des existantes (merge) sur la base du nom
 #
 def mergeNedb(origPath, matchOn, order, yaml2merge, ignoreFields = []):
+
+    print("Fusion avec fichier NdDB existant...")
+
     liste = []
 
     try:

@@ -8,7 +8,7 @@ import html
 from bs4 import BeautifulSoup
 from lxml import html
 
-from libhtml import html2text, mergeYAML
+from libhtml import html2text, html2simplehtml, mergeYAML, mergeNedb, extractText
 
 ## Configurations pour le lancement
 MOCK_LIST = None
@@ -20,12 +20,17 @@ URL = "http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Tableau%20r%c3%a9capitul
 
 PROPERTIES = [ "Caractéristique associée", "caractéristique associée", "Formation nécessaire", "Formation nécesssaire", "Malus d’armure"]
 
-FIELDS = ['Nom', 'Caractéristique associée', 'Malus d’armure', 'Formation nécessaire', 'Description', 'Référence' ]
+FIELDS = ['Nom', 'Caractéristique associée', 'Malus d’armure', 'Formation nécessaire', 'Description', 'DescriptionHTML', 'Référence' ]
 MATCH = ['Nom']
+
+FIELDSNEDB = ['nom', 'attribut', 'malusArmure', 'formation', 'description', 'descriptionHTML', 'reference', '_id' ]
+MATCHNEDB = ['nom']
 
 
 liste = []
+listeNedb = []
 
+print("Extraction des compétences...")
 
 list = []
 if MOCK_LIST:
@@ -35,17 +40,30 @@ else:
     parsed_html = BeautifulSoup(urllib.request.urlopen(URL).read(),features="lxml")
     list += parsed_html.body.find(id='PageContentDiv').find_next('table',class_="tablo").find_all('tr')
 
-#
-# cette fonction se charge d'extraire le texte de la partie HTML
-# en explorant certaines balises. Malheureusement, le format des
-# pages peut différer d'une fois à l'autre.
-#
-def extractText(list):
-    text = ""
-    for el in list:
-        text += html2text(el)
-    return text
+def convert4nedb(sort):
+    sortNedb = {}
 
+    sortNedb[u'nom']=sort[u'Nom']
+    sortNedb[u'reference']=sort[u'Référence']
+    sortNedb['description']=sort['Description']
+    sortNedb['descriptionHTML']=sort['DescriptionHTML']
+
+    try:
+        sortNedb['attribut']=sort["Caractéristique associée"]
+    except:
+        pass
+
+    try:
+        sortNedb['malusArmure']=sort["Malus d’armure"]
+    except:
+        pass
+
+    try:
+        sortNedb['formation']=sort["Formation nécessaire"]
+    except:
+        pass
+
+    return sortNedb
 
 # itération sur chaque page
 for l in list:
@@ -108,16 +126,20 @@ for l in list:
     # lire la description
     text = extractText(descr)
     
-    sort['Description']=text.strip()
+    sort['Description']=text[0].strip()
+    sort['DescriptionHTML']=text[1].strip()
     
     # ajouter sort
     liste.append(sort)
+
+    # conversion du sort pour nedb
+    listeNedb.append(convert4nedb(sort))
     
     if MOCK_COMP:
         break
 
-print("Fusion avec fichier YAML existant...")
-
 HEADER = ""
 
 mergeYAML("../data/competences.yml", MATCH, FIELDS, HEADER, liste)
+
+mergeNedb("../data/competences.db", MATCHNEDB, FIELDSNEDB, listeNedb)

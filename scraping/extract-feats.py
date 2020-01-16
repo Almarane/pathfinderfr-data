@@ -33,6 +33,9 @@ PROPERTIES = [  "Catégorie", "Catégories", "Conditions", "Condition", "Conditi
 FIELDS = ['Nom', 'Résumé', 'Catégorie', 'Conditions', 'ConditionsRefs', 'Avantage', 'Normal', 'Spécial', 'Source', 'Référence' ]
 MATCH = ['Nom']
 
+FIELDSNEDB = ['nom', 'resume', 'categorie', 'conditions', 'conditionsRefs', 'avantage', 'normal', 'special', 'source', 'reference', '_id' ]
+MATCHNEDB = ['nom']
+
 FEAT_REFS = []
 
 for URL in URLS:
