@@ -1,4 +1,16 @@
+#
+# Ces données ont été extraites du site www.pathfinder-fr.org
+# Ce fichier utilise des marques déposées et/ou des droits d’auteurs qui sont la propriété 
+# de Black Book Editions et de Paizo Publishing 
+#
+# Voir: 
+#  - http://www.pathfinder-fr.org/Wiki/PCUP.ashx
+#  - http://paizo.com/communityuse
+#  - http://www.black-book-editions.fr/texte.php?id=6
+#
+
 - Nom: Armure cérémonielle de soie
+  Catégorie: Armure légère
   Source: AG
   Prix: 30 po
   Bonus: '+1'
@@ -15,6 +27,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Armurecérémonielledesoie
   
 - Nom: Armure de cuir
+  Catégorie: Armure légère
   Source: MJ
   Prix: 10 po
   Bonus: '+2'
@@ -31,6 +44,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Armuredecuir
   
 - Nom: Armure de parade
+  Catégorie: Armure légère
   Source: AE
   Prix: 25 po
   Bonus: '+3'
@@ -54,6 +68,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Armuredeparade
   
 - Nom: Armure matelassée
+  Catégorie: Armure légère
   Source: MJ
   Prix: 5 po
   Bonus: '+1'
@@ -70,6 +85,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Armurematelassée
   
 - Nom: Cuirasse lamellaire
+  Catégorie: Armure légère
   Source: AG
   Prix: 15 po
   Bonus: '+2'
@@ -84,6 +100,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Cuirasselamellaire
   
 - Nom: Vêtements rembourrés
+  Catégorie: Armure légère
   Source: MJRA
   Prix: 100 po
   Bonus: '+1'
@@ -103,6 +120,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Vêtementsrembourrés
   
 - Nom: Armure à quatre miroirs
+  Catégorie: Armure intermédiaire
   Source: AG
   Prix: 45 po
   Bonus: '+6'
@@ -120,6 +138,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Armureàquatremiroirs
   
 - Nom: Armure d'écailles
+  Catégorie: Armure intermédiaire
   Source: MJ
   Prix: 50 po
   Bonus: '+5'
@@ -134,6 +153,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Armuredécailles
   
 - Nom: Armure lamellaire (acier)
+  Catégorie: Armure intermédiaire
   Source: AG
   Prix: 150 po
   Bonus: '+6'
@@ -154,6 +174,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Armurelamellaire
   
 - Nom: Cotte de mailles
+  Catégorie: Armure intermédiaire
   Source: MJ
   Prix: 150 po
   Bonus: '+6'
@@ -171,6 +192,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Cottedemailles
   
 - Nom: Cuirasse flexible ou agile
+  Catégorie: Armure intermédiaire
   Source: MJRA
   Prix: 400 po
   Bonus: '+6'
@@ -187,6 +209,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Cuirasseflexible
   
 - Nom: Kikko
+  Catégorie: Armure intermédiaire
   Source: AG
   Prix: 250 po
   Bonus: '+5'
@@ -203,6 +226,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Kikko
   
 - Nom: Armure de plaques
+  Catégorie: Armure lourde
   Source: MJ
   Prix: 600 po
   Bonus: '+8'
@@ -217,6 +241,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Armuredeplaques
   
 - Nom: Armure lamellaire (fer)
+  Catégorie: Armure lourde
   Source: AG
   Prix: 200 po
   Bonus: '+7'
@@ -237,6 +262,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Armurelamellaire
   
 - Nom: Clibanion
+  Catégorie: Armure lourde
   Source: MJ
   Prix: 200 po
   Bonus: '+7'
@@ -254,6 +280,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Clibanion
   
 - Nom: Harnois
+  Catégorie: Armure lourde
   Source: MJ
   Prix: 1500 po
   Bonus: '+9'
@@ -274,6 +301,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Harnois
   
 - Nom: Manteau de pierre
+  Catégorie: Armure lourde
   Source: AG
   Prix: 500 po
   Bonus: '+8'
@@ -288,6 +316,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Manteaudepierre
   
 - Nom: Plate de pierre
+  Catégorie: Armure lourde
   Source: AE
   Prix: 1800 po
   Bonus: '+9'
@@ -305,6 +334,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Platedepierre
   
 - Nom: Écu (acier)
+  Catégorie: Bouclier
   Source: MJ
   Prix: 20 po
   Bonus: '+2'
@@ -320,6 +350,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Écu
   
 - Nom: Klar
+  Catégorie: Bouclier
   Source: AE
   Prix: 12 po
   Bonus: '+1'
@@ -337,6 +368,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Klar
   
 - Nom: Madu (cuir)
+  Catégorie: Bouclier
   Source: AE
   Prix: 40 po
   Bonus: '+1'
@@ -361,6 +393,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Madu
   
 - Nom: Rondache (acier)
+  Catégorie: Bouclier
   Source: MJ
   Prix: 9 po
   Bonus: '+1'
@@ -377,6 +410,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Rondache
   
 - Nom: Rondache de preste usage (acier)
+  Catégorie: Bouclier
   Source: MJRA
   Prix: 59 po
   Bonus: '+1'
@@ -398,6 +432,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Rondachedepresteusage
   
 - Nom: Targe
+  Catégorie: Bouclier
   Source: MJ
   Prix: 5 po
   Bonus: '+1'
@@ -420,6 +455,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Targe
   
 - Nom: Gantelet d'armes
+  Catégorie: Supplément
   Source: MJ
   Prix: 8 po
   Bonus: —
@@ -447,6 +483,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Ganteletdarmes
   
 - Nom: Pointes pour bouclier
+  Catégorie: Supplément
   Source: MJ
   Prix: +10 po
   Bonus: —
@@ -468,6 +505,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Pointespourbouclier
   
 - Nom: Armure de bois
+  Catégorie: Armure légère
   Source: MJRA
   Prix: 20 po
   Bonus: '+3'
@@ -485,6 +523,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Armuredebois
   
 - Nom: Armure de cuir cloutée
+  Catégorie: Armure légère
   Source: MJ
   Prix: 25 po
   Bonus: '+3'
@@ -502,6 +541,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Armuredecuircloutée
   
 - Nom: Armure lamellaire (cuir)
+  Catégorie: Armure légère
   Source: AG
   Prix: 60 po
   Bonus: '+4'
@@ -522,6 +562,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Armurelamellaire
   
 - Nom: Chemise de mailles
+  Catégorie: Armure légère
   Source: MJ
   Prix: 100 po
   Bonus: '+4'
@@ -536,6 +577,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Chemisedemailles
   
 - Nom: Haramaki
+  Catégorie: Armure légère
   Source: AG
   Prix: 3 po
   Bonus: '+1'
@@ -551,6 +593,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Haramaki
   
 - Nom: Armure de la montagne
+  Catégorie: Armure intermédiaire
   Source: AG
   Prix: 50 po
   Bonus: '+5'
@@ -568,6 +611,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Armuredelamontagne
   
 - Nom: Armure en peau
+  Catégorie: Armure intermédiaire
   Source: MJ
   Prix: 15 po
   Bonus: '+4'
@@ -586,6 +630,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Armureenpeau
   
 - Nom: Armure lamellaire (corne)
+  Catégorie: Armure intermédiaire
   Source: AG
   Prix: 100 po
   Bonus: '+5'
@@ -606,6 +651,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Armurelamellaire
   
 - Nom: Cuirasse
+  Catégorie: Armure intermédiaire
   Source: MJ
   Prix: 200 po
   Bonus: '+6'
@@ -623,6 +669,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Cuirasse
   
 - Nom: Do-maru
+  Catégorie: Armure intermédiaire
   Source: AG
   Prix: 200 po
   Bonus: '+5'
@@ -640,6 +687,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Domaru
   
 - Nom: Veste renforcée
+  Catégorie: Armure intermédiaire
   Source: MJRA
   Prix: 50 po
   Bonus: '+4'
@@ -652,7 +700,7 @@
   Description: Cette veste en cuir rembourré est renforcée de plaques de métal cousues
     dans la doublure. La veste renforcée est plus encombrante qu’une armure légère
     mais moins efficace que la plupart des armures intermédiaires. En revanche, on
-    peut l’enfiler ou de la retirer par une action de mouvement (il n’y a pas d’option
+    peut l’enfiler ou la retirer par une action de mouvement (il n’y a pas d’option
     d’ « enfilage à la hâte » pour les vestes renforcées). Si elle est portée par-dessus
     une autre armure, utilisez le meilleur bonus de CA et la pire valeur de toutes
     les autres catégories. La veste renforcée n’a aucun effet si elle est portée avec
@@ -661,6 +709,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Vesterenforcée
   
 - Nom: Armure de plaques flexible
+  Catégorie: Armure lourde
   Source: MJRA
   Prix: 850 po
   Bonus: '+8'
@@ -679,6 +728,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Armuredeplaquesflexible
   
 - Nom: Armure lamellaire (pierre)
+  Catégorie: Armure lourde
   Source: AG
   Prix: 500 po
   Bonus: '+8'
@@ -699,6 +749,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Armurelamellaire
   
 - Nom: Crevice
+  Catégorie: Armure lourde
   Source: MJ
   Prix: 250 po
   Bonus: '+7'
@@ -716,6 +767,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Crevice
   
 - Nom: Kusari Gusoku
+  Catégorie: Armure lourde
   Source: AG
   Prix: 350 po
   Bonus: '+7'
@@ -730,6 +782,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#KusariGusoku
   
 - Nom: O-yoroï
+  Catégorie: Armure lourde
   Source: AG
   Prix: 1700 po
   Bonus: '+8'
@@ -759,6 +812,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Oyoroï
   
 - Nom: Tatami-do
+  Catégorie: Armure lourde
   Source: AG
   Prix: 1000 po
   Bonus: '+7'
@@ -777,6 +831,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Tatamido
   
 - Nom: Écu (bois)
+  Catégorie: Bouclier
   Source: MJ
   Prix: 7 po
   Bonus: '+2'
@@ -792,6 +847,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Écu
   
 - Nom: Madu (acier)
+  Catégorie: Bouclier
   Source: AE
   Prix: 50 po
   Bonus: '+1'
@@ -816,6 +872,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Madu
   
 - Nom: Pavois
+  Catégorie: Bouclier
   Source: MJ
   Prix: 30 po
   Bonus: '+4'
@@ -843,6 +900,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Pavois
   
 - Nom: Rondache (bois)
+  Catégorie: Bouclier
   Source: MJ
   Prix: 3 po
   Bonus: '+1'
@@ -859,6 +917,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Rondache
   
 - Nom: Rondache de preste usage (bois)
+  Catégorie: Bouclier
   Source: MJRA
   Prix: 53 po
   Bonus: '+1'
@@ -880,6 +939,7 @@
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Rondachedepresteusage
   
 - Nom: Pointes pour armure
+  Catégorie: Supplément
   Source: MJ
   Prix: +50 po
   Bonus: —
@@ -904,4 +964,3 @@
     on peut en faire une arme magique distincte.'
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Descriptions%20individuelles%20des%20armures.ashx#Pointespourarmures
   
-

@@ -9,97 +9,139 @@ import re
 from bs4 import BeautifulSoup
 from lxml import html
 
+from libhtml import cleanSectionName, cleanProperty, cleanName, html2text, getValidSource, mergeYAML
 
 ## Configurations pour le lancement
 MOCK_LIST = None
 MOCK_DON = None
 #MOCK_LIST = "mocks/donsListe.html"   # décommenter pour tester avec une liste pré-téléchargée
-#MOCK_DON  = "mocks/don3.html"        # décommenter pour tester avec un sort pré-téléchargé
+#MOCK_DON  = "mocks/don7.html"        # décommenter pour tester avec un sort pré-téléchargé
 
-URLs = ["http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.tableau%20r%c3%a9capitulatif%20des%20dons.ashx"]
+URLS = ["http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.tableau%20r%c3%a9capitulatif%20des%20dons.ashx",
+        "http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.dons%20daudace.ashx",
+        "http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.dons%20de%20cr%c3%a9ation%20dobjets.ashx",
+        "http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.dons%20d%c3%a9cole.ashx",
+        "http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.dons%20d%c3%a9quipe.ashx",
+        "http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.dons%20de%20m%c3%a9tamagie.ashx",
+        "http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.dons%20de%20spectacle.ashx",
+        "http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Tableau%20r%c3%a9capitulatif%20des%20dons%20mythiques.ashx",
+        "http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.dons%20issus%20du%20cadre%20de%20campagne.ashx",
+        ]
 
-PROPERTIES = [  u"Catégorie", u"Catégories", u"Conditions", u"Condition", u"Conditions requises", u"Normal", u"Avantage", u"Avantages", u"Spécial", u"À noter"]
+PROPERTIES = [  "Catégorie", "Catégories", "Conditions", "Condition", "Conditions requises", "Normal", "Avantage", "Avantages", "Spécial", "À noter"]
 
-liste = []
+FIELDS = ['Nom', 'Résumé', 'Catégorie', 'Conditions', 'ConditionsRefs', 'Avantage', 'Normal', 'Spécial', 'Source', 'Référence' ]
+MATCH = ['Nom']
 
+FEAT_REFS = []
 
-list = []
-if MOCK_LIST:
-    parsed_html = BeautifulSoup(open(MOCK_LIST),features="lxml")
-    list = parsed_html.body.find(id='PageContentDiv').find_all('tr')
-else:
+for URL in URLS:
+    
+    liste = []
+
+    print("Extraction des dons: " + URL)
+
     list = []
-    for u in URLs:
-        parsed_html = BeautifulSoup(urllib.request.urlopen(u).read(),features="lxml")
-        list += parsed_html.body.find(id='PageContentDiv').find_all('tr')
-
-
-# itération sur chaque page
-for l in list:
-    don = {}
-    
-    element = l.find_next('a')
-    title = element.text
-    link  = element.get('href')
-    source  = l.find_next('sup').text
-    if source == "MJ-UC":
-        source = "MJ"
-    elif source == "MA": # doit être une erreur
-        source = "AO"
-    
-    print("Processing %s" % title)
-    pageURL = "http://www.pathfinder-fr.org/Wiki/" + link
-    
-    don[u'Nom']=title
-    don[u'Référence']=pageURL
-    don[u'Source']=source
-        
-    if MOCK_DON:
-        content = BeautifulSoup(open(MOCK_DON),features="lxml").body.find(id='PageContentDiv')
+    if MOCK_LIST:
+        parsed_html = BeautifulSoup(open(MOCK_LIST),features="lxml")
+        list = parsed_html.body.find(id='PageContentDiv').find_all('tr')
     else:
-        content = BeautifulSoup(urllib.request.urlopen(pageURL).read(),features="lxml").body.find(id='PageContentDiv')
+        parsed_html = BeautifulSoup(urllib.request.urlopen(URL).read(),features="lxml")
+        list = parsed_html.body.find(id='PageContentDiv').find_all('tr')
     
-    if(content == None):
-        print("Page %s n'a pas pu être récupérée!" % pageURL)
-        continue
-
-    # lire les attributs
-    text = ""
-    for attr in content.find_all('b'):
-        key = attr.text.strip()
-        if key[-1]=='.':
-            key = key[:-1]
-        if key.endswith(' :'):
-            key = key[:-2]
+    # itération sur chaque page
+    for tr in list:
+        don = {}
         
-        for s in attr.next_siblings:
-            #print "%s %s" % (key,s.name)
-            if s.name == 'b':
-                break
-            elif s.string:
-                text += s.string
-
-        if key in PROPERTIES:
-            if key == u"Condition" or key == u"Conditions requises":
-                key = u"Conditions"
-            elif key == u"Avantages":
-                key = u"Avantage"
-            elif key == u"Catégories":
-                key = u"Catégorie"
-            elif key == u"À noter":
-                key = u"Spécial"
-                
-            don[key]=text.strip()
-            descr = s.next_siblings
-            text = ""
+        if 'class' in tr.attrs and 'titre' in tr.attrs['class']:
+            continue
+        
+        element = tr.find_next('a')
+        title = element.text
+        link  = element.get('href')
+        if tr.find('sup'):
+            source = getValidSource(tr.find('sup').text)
         else:
-            print("- Skipping unknown property %s" % key)
-    
-    # ajouter don
-    liste.append(don)
-    
-    if MOCK_DON:
-        break
+            source = "MJ"
+        
+        avantageShort = None
+        columnIdx = 0
+        tds = tr.find_all('td')
+        avantageShort = tds[len(tds)-1].text
+        
+        print("Don %s" % title)
+        pageURL = "http://www.pathfinder-fr.org/Wiki/" + link
+        FEAT_REFS.append(link)
+        
+        don['Nom']=cleanName(title)
+        don['Référence']=pageURL
+        don['Source']=source
+        don['Résumé']=cleanProperty(avantageShort)
+        don['ConditionsRefs']=[]
+        
+        if not avantageShort:
+            print("Résumé n'a pas été trouvé pour %s" % title)
+            exit(1)
+            
+        if MOCK_DON:
+            content = BeautifulSoup(open(MOCK_DON),features="lxml").body.find(id='PageContentDiv')
+        else:
+            content = BeautifulSoup(urllib.request.urlopen(pageURL).read(),features="lxml").body.find(id='PageContentDiv')
+        
+        if(content == None):
+            print("Page %s n'a pas pu être récupérée!" % pageURL)
+            continue
 
-yml = yaml.safe_dump(liste,default_flow_style=False, allow_unicode=True)
-print(yml)
+        # lire les attributs
+        text = ""
+        for attr in content.find_all('b'):
+            key = attr.text.strip()
+            if key[-1]=='.':
+                key = key[:-1]
+            if key.endswith(' :'):
+                key = key[:-2]
+            
+            refs = []
+            for s in attr.next_siblings:
+                #print "%s %s" % (key,s.name)
+                if s.name == 'b':
+                    break
+                else:
+                    # keep links (href) to build dependency tables
+                    if s.name == 'a':
+                        refs.append(s['href'])
+                    text += html2text(s)
+
+            if key in PROPERTIES:
+                if key == "Condition" or key == "Conditions requises":
+                    key = "Conditions"
+                elif key == "Avantages":
+                    key = "Avantage"
+                elif key == "Catégories":
+                    key = "Catégorie"
+                elif key == "À noter":
+                    key = "Spécial"
+                
+                don[key]=cleanProperty(text)
+                descr = s.next_siblings
+                text = ""
+            else:
+                print("- Skipping unknown property %s" % key)
+        
+            if key == "Conditions":
+                for r in refs:
+                    if r in FEAT_REFS:
+                        don['ConditionsRefs'].append("http://www.pathfinder-fr.org/Wiki/" + r)
+        
+        # ajouter don
+        liste.append(don)
+        
+        if MOCK_DON:
+            break
+
+
+    print("Fusion avec fichier YAML existant...")
+
+    HEADER = ""
+
+    mergeYAML("../data/dons.yml", MATCH, FIELDS, HEADER, liste)

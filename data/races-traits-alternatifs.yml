@@ -1,3 +1,14 @@
+#
+# Ces données ont été extraites du site www.pathfinder-fr.org
+# Ce fichier utilise des marques déposées et/ou des droits d’auteurs qui sont la propriété 
+# de Black Book Editions et de Paizo Publishing 
+#
+# Voir: 
+#  - http://www.pathfinder-fr.org/Wiki/PCUP.ashx
+#  - http://paizo.com/communityuse
+#  - http://www.black-book-editions.fr/texte.php?id=6
+#
+
 ###
 ### ATTENTION: certains traits ont été ajustés manuellement
 ### - Duergars: les traits des Nains ont été ajoutés individuellement
@@ -736,7 +747,7 @@
   - Chance des halfelins
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Halfelin.ashx
   
-- Nom: À l’affût du talent
+- Nom: À l'affût du talent
   Race: Humain
   Source: MR
   Description: Les humains ont une bonne intuition quand il s’agit de repérer un
@@ -1138,7 +1149,7 @@
   - Compétent
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.aasimar%20(race).ashx
   
-- Nom: Enfant de l’humanité
+- Nom: Enfant de l'humanité
   Race: Aasimar
   Source: MR
   Description: Certains aasimars ont une ascendance céleste extrêmement éloignée.
@@ -1333,7 +1344,7 @@
   - Immunités des drows
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.drow%20(race).ashx
   
-- Nom: Traqueur de l’Ombreterre
+- Nom: Traqueur de l'Ombreterre
   Race: Drow
   Source: MR
   Description: Les territoires situés au-delà des cités drows, tunnels grossiers
@@ -1497,7 +1508,7 @@
   - Vision dans le noir
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.hobgobelin%20(race).ashx
   
-- Nom: Chasseur d’esclaves
+- Nom: Chasseur d'esclaves
   Race: Hobgobelin
   Source: MR
   Description: Les esclavagistes hobgobelins excellent dans la traque des esclaves
@@ -1687,7 +1698,7 @@
   - Bricoleur
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.homme-rat%20(race).ashx
   
-- Nom: Fureur de l’acculé
+- Nom: Fureur de l'acculé
   Race: Homme-rat
   Source: MR
   Description: Les hommes-rats se battent violemment lorsqu’ils sont coupés de leurs
@@ -1966,7 +1977,7 @@
   - Résistance élémentaire
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.ondin%20(race).ashx
   
-- Nom: Perception de l’eau
+- Nom: Perception de l'eau
   Race: Ondin
   Source: MR
   Description: Les ondins ayant ce trait racial perçoivent les vibrations de l’eau,
@@ -2458,7 +2469,7 @@
   - Trait racial de guenaude
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.changelin%20(race).ashx
   
-- Nom: Fille de l’océan (guenaude marine)
+- Nom: Fille de l'océan (guenaude marine)
   Race: Changelin
   Source: MR
   Description: La changelin gagne un bonus racial de +1 à ses tests de Natation.
@@ -2531,27 +2542,25 @@
   Modifie:
   - Pouvoirs magiques
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.duergar%20(race).ashx
-
+  
 - Nom: Trait nain (implacable)
   Race: Duergar
   Source: MR
   Description: Les duergars peuvent choisir n’importe quel trait racial nain qui
-    remplace stabilité.
-    Les nains sont doués pour se frayer un chemin sur les champs de bataille
-    et repousser leurs adversaires facilement. Ceux qui possèdent ce trait racial
-    reçoivent un bonus racial de +2 aux tests de manoeuvre offensive pour faire une
-    bousculade ou renverser un adversaire. Ce bonus s’applique uniquement si le nain
-    et son adversaire se tiennent debout sur le sol.
+    remplace stabilité. Les nains sont doués pour se frayer un chemin sur les champs
+    de bataille et repousser leurs adversaires facilement. Ceux qui possèdent ce trait
+    racial reçoivent un bonus racial de +2 aux tests de manoeuvre offensive pour faire
+    une bousculade ou renverser un adversaire. Ce bonus s’applique uniquement si le
+    nain et son adversaire se tiennent debout sur le sol.
   Remplace:
   - Stabilité
-  Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Nain.ashx  
-
+  Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Nain.ashx
+  
 - Nom: Trait nain (montagnard)
   Race: Duergar
   Source: MR
   Description: Les duergars peuvent choisir n’importe quel trait racial nain qui
-    remplace stabilité.
-    Les nains des montagnes sont particulièrement doués pour l’escalade
+    remplace stabilité. Les nains des montagnes sont particulièrement doués pour l’escalade
     et pour se déplacer sur d’étroites corniches rocheuses. Ceux qui possèdent ce
     trait sont immunisés contre le vertige et ne perdent pas leur bonus de Dextérité
     à la CA quand ils font un test d’Escalade ou d’Acrobaties pour traverser une surface
@@ -2564,30 +2573,28 @@
   Race: Duergar
   Source: MR
   Description: Les duergars peuvent choisir n’importe quel trait racial nain qui
-    remplace le trait racial nain Robuste.
-    Les nains sont réputés être têtus. Ceux qui possèdent ce trait reçoivent
-    un bonus racial de +2 aux jets de sauvegarde pour résister aux sorts et pouvoirs
-    magiques d’enchantement (charme) et d’enchantement (coercition). De plus, s’ils
-    ratent un de ces jets, ils ont le droit d’en refaire un, 1 round plus tard, pour
-    mettre prématurément un terme à l’effet (à condition qu’il dure plus d’un round).
-    Ce second jet a le même DD que le premier. Si le nain dispose d’un pouvoir similaire
-    issu d’une autre source (comme l’esprit fuyant du roublard), il ne peut en utiliser
-    qu’un des deux par round, mais il peut se servir du second au deuxième round s’il
-    a raté son jet avec le premier pouvoir.
+    remplace le trait racial nain Robuste. Les nains sont réputés être têtus. Ceux
+    qui possèdent ce trait reçoivent un bonus racial de +2 aux jets de sauvegarde
+    pour résister aux sorts et pouvoirs magiques d’enchantement (charme) et d’enchantement
+    (coercition). De plus, s’ils ratent un de ces jets, ils ont le droit d’en refaire
+    un, 1 round plus tard, pour mettre prématurément un terme à l’effet (à condition
+    qu’il dure plus d’un round). Ce second jet a le même DD que le premier. Si le
+    nain dispose d’un pouvoir similaire issu d’une autre source (comme l’esprit fuyant
+    du roublard), il ne peut en utiliser qu’un des deux par round, mais il peut se
+    servir du second au deuxième round s’il a raté son jet avec le premier pouvoir.
   Remplace:
   - Immunités des duergars
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Nain.ashx
-
+  
 - Nom: Trait nain (résistant à la magie)
   Race: Duergar
   Source: MR
   Description: Les duergars peuvent choisir n’importe quel trait racial nain qui
-    remplace le trait racial nain Robuste.
-    Les clans nains les plus anciens ont développé une résistance particulière
-    à la magie. Les nains qui disposent de ce trait racial gagnent une RM de 5 + niveau
-    de personnage. Ils peuvent la baisser pendant 1 round, par une action simple.
-    Les nains qui possèdent ce trait racial subissent un malus de -2 aux tests de
-    Concentration liés aux sorts profanes.
+    remplace le trait racial nain Robuste. Les clans nains les plus anciens ont développé
+    une résistance particulière à la magie. Les nains qui disposent de ce trait racial
+    gagnent une RM de 5 + niveau de personnage. Ils peuvent la baisser pendant 1 round,
+    par une action simple. Les nains qui possèdent ce trait racial subissent un malus
+    de -2 aux tests de Concentration liés aux sorts profanes.
   Remplace:
   - Immunités des duergars
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Nain.ashx
@@ -2787,14 +2794,14 @@
   Race: Suli
   Source: MR
   Description: Le suli possédant ce trait racial a un lien plus fort avec un type
-    d’énergie. La capacité assaut élémentaire
-    du suli ne peut infliger que des dégâts du type électricité. Le suli a une résistance
-    de 5 à ce type d’énergie, mais aucune résistance raciale aux trois autres types.
-    Si sa capacité d’assaut élémentaire est active, le suli reçoit une capacité supplémentaire.
-    Une fois par round, par une action immédiate, le suli peut envoyer
-    une décharge à une créature qui le touche ou l’attaque au moyen d’une attaque
-    naturelle,d’une attaque à mains nues ou d’une arme de corps à corps en métal,
-    infligeant 1d6 points d’électricité à la créature.
+    d’énergie. La capacité assaut élémentaire du suli ne peut infliger que des dégâts
+    du type électricité. Le suli a une résistance de 5 à ce type d’énergie, mais aucune
+    résistance raciale aux trois autres types. Si sa capacité d’assaut élémentaire
+    est active, le suli reçoit une capacité supplémentaire. Une fois par round, par
+    une action immédiate, le suli peut envoyer une décharge à une créature qui le
+    touche ou l’attaque au moyen d’une attaque naturelle,d’une attaque à mains nues
+    ou d’une arme de corps à corps en métal, infligeant 1d6 points d’électricité à
+    la créature.
   Modifie:
   - Assaut élémentaire (Sur)
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.suli%20(race).ashx
@@ -2803,14 +2810,14 @@
   Race: Suli
   Source: MR
   Description: 'Le suli possédant ce trait racial a un lien plus fort avec un type
-    d’énergie. La capacité assaut élémentaire
-    du suli ne peut infliger que des dégâts du type feu. Le suli a une résistance
-    de 5 à ce type d’énergie, mais aucune résistance raciale aux trois autres types.
-    Si sa capacité d’assaut élémentaire est active, le suli reçoit une capacité supplémentaire.
-    Plutôt que de rajouter des dégâts à une attaque de corps à corps,
-    le suli peut projeter une  d’une arme de jet. Le suli effectue une attaque de
-    contact à distance : s’il touche sa cible, cette dernière reçoit 1d6 points de
-    dégâts de feu. Les flammes ont un facteur de portée de 3 mètres.'
+    d’énergie. La capacité assaut élémentaire du suli ne peut infliger que des dégâts
+    du type feu. Le suli a une résistance de 5 à ce type d’énergie, mais aucune résistance
+    raciale aux trois autres types. Si sa capacité d’assaut élémentaire est active,
+    le suli reçoit une capacité supplémentaire. Plutôt que de rajouter des dégâts
+    à une attaque de corps à corps, le suli peut projeter une  d’une arme de jet.
+    Le suli effectue une attaque de contact à distance : s’il touche sa cible, cette
+    dernière reçoit 1d6 points de dégâts de feu. Les flammes ont un facteur de portée
+    de 3 mètres.'
   Modifie:
   - Assaut élémentaire (Sur)
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.suli%20(race).ashx
@@ -2819,16 +2826,15 @@
   Race: Suli
   Source: MR
   Description: Le suli possédant ce trait racial a un lien plus fort avec un type
-    d’énergie. La capacité assaut élémentaire
-    du suli ne peut infliger que des dégâts du type acide. Le suli a une résistance
-    de 5 à ce type d’énergie, mais aucune résistance raciale aux trois autres types.
-    Si sa capacité d’assaut élémentaire est active, le suli reçoit une capacité supplémentaire.
-    Lorsque le suli se déplace sur un terrain difficile lié à la terre
-    ou à la pierre (décombres, boue, sable,etc.) il peut se déplacer de 1,5 mètre
-    sur ce terrain tous les rounds comme s’il s’agissait d’un terrain normal. Cela
-    lui permet de faire un pas de placement sur ce terrain difficile. Les autres genres
-    de terrains difficiles (glace, chaussetrappes,frondaisons, etc.) affectent le
-    suli normalement.
+    d’énergie. La capacité assaut élémentaire du suli ne peut infliger que des dégâts
+    du type acide. Le suli a une résistance de 5 à ce type d’énergie, mais aucune
+    résistance raciale aux trois autres types. Si sa capacité d’assaut élémentaire
+    est active, le suli reçoit une capacité supplémentaire. Lorsque le suli se déplace
+    sur un terrain difficile lié à la terre ou à la pierre (décombres, boue, sable,etc.)
+    il peut se déplacer de 1,5 mètre sur ce terrain tous les rounds comme s’il s’agissait
+    d’un terrain normal. Cela lui permet de faire un pas de placement sur ce terrain
+    difficile. Les autres genres de terrains difficiles (glace, chaussetrappes,frondaisons,
+    etc.) affectent le suli normalement.
   Modifie:
   - Assaut élémentaire (Sur)
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.suli%20(race).ashx
@@ -2837,17 +2843,16 @@
   Race: Suli
   Source: MR
   Description: Le suli possédant ce trait racial a un lien plus fort avec un type
-    d’énergie. La capacité assaut élémentaire
-    du suli ne peut infliger que des dégâts du type glace. Le suli a une résistance
-    de 5 à ce type d’énergie, mais aucune résistance raciale aux trois autres types.
-    Si sa capacité d’assaut élémentaire est active, le suli reçoit une capacité supplémentaire.
-    Le suli peut marcher sur les liquides à base d’eau comme s’il utilisait
-    marche sur l’onde, à la seule différence qu’au lieu de planer au-dessus de la
-    surface, il crée une couche de glace temporaire qui le soutient et fond dès qu’il
-    s’en éloigne. La glace n’est pas glissante pour le suli et n’affecte pas son équilibre
-    ni sa vitesse, bien que les autres glaces l’affectent normalement.Les autres créatures
-    ne peuvent pas traverser cette glace, mais le suli peut porter une créature alors
-    qu’il la traverse.
+    d’énergie. La capacité assaut élémentaire du suli ne peut infliger que des dégâts
+    du type glace. Le suli a une résistance de 5 à ce type d’énergie, mais aucune
+    résistance raciale aux trois autres types. Si sa capacité d’assaut élémentaire
+    est active, le suli reçoit une capacité supplémentaire. Le suli peut marcher sur
+    les liquides à base d’eau comme s’il utilisait marche sur l’onde, à la seule différence
+    qu’au lieu de planer au-dessus de la surface, il crée une couche de glace temporaire
+    qui le soutient et fond dès qu’il s’en éloigne. La glace n’est pas glissante pour
+    le suli et n’affecte pas son équilibre ni sa vitesse, bien que les autres glaces
+    l’affectent normalement.Les autres créatures ne peuvent pas traverser cette glace,
+    mais le suli peut porter une créature alors qu’il la traverse.
   Modifie:
   - Assaut élémentaire (Sur)
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.suli%20(race).ashx
@@ -2928,4 +2933,3 @@
   - Magie des ombres
   Référence: http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.wayang%20(race).ashx
   
-
