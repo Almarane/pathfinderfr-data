@@ -2,6 +2,13 @@
 
 This repository contains data extracted from www.pathfinder-fr.org and available as YAML file.
 
+# Necessary library
+
+- Python 3
+- pyyaml
+- bs4
+- lxml
+
 ## LICENSE
 
 See also: LICENSE.md

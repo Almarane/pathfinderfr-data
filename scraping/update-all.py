@@ -11,6 +11,8 @@ echo "#####################"
 ./extract-feats.py
 ./extract-feats-racial.py
 ./extract-spells.py
+./update-spell-levels.py
+./update-spell-levels-nedb.py
 ./extract-conditions.py
 
 echo "#####################"

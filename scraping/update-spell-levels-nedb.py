@@ -3,13 +3,14 @@
 
 import urllib.request
 import yaml
+import json
 import sys
 import html
 import re
 from bs4 import BeautifulSoup
 from lxml import html
 
-from libhtml import mergeYAML
+from libhtml import mergeNedb
 
 
 URLs = [{'URL': "http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Liste%20des%20formules%20dalchimiste.ashx", 'classe': 'Alc'},
@@ -34,8 +35,8 @@ URLs = [{'URL': "http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Liste%20des%20
         {'URL': "http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Sorts%20de%20spirite.ashx", 'classe': 'Spi'},
         ]
 
-FIELDS = ['Nom', 'École', 'Niveau', 'Portée', 'Cible ou zone d\'effet', 'Temps d\'incantation', 'Composantes', 'Durée', 'Jet de sauvegarde', 'Résistance à la magie', 'Description', 'DescriptionHTML', 'Source', 'Référence' ]
-MATCH = ['Référence']
+FIELDS = ['nom', 'ecole', 'niveau', 'portee', 'cible', 'tempsIncantation', 'composantes', 'duree', 'jds', 'rm', 'description', 'descriptionHTML', 'source', 'reference', '_id' ]
+MATCH = ['_id']
 
 ## Configurations pour le lancement
 MOCK_SL = None
@@ -44,12 +45,17 @@ MOCK_SL = None
 print("Importation des sorts...")
 
 sorts = []
-with open("../data/spells.yml", 'r') as stream:
-    try:
-        sorts = yaml.safe_load(stream)
-    except yaml.YAMLError as exc:
-        print(exc)
-        exit(1)
+db = '../data/sorts.db'
+try:
+    nedbFile = open(db, 'r', encoding='utf8')
+except IOError:
+    nedbFile = open(db, 'w', encoding='utf8')
+    nedbFile = open(db, 'r', encoding='utf8')
+
+with nedbFile as stream:
+    for line in stream:
+        if line.strip():
+            sorts.append(json.loads(line))
 
 ##
 ## Recherche un sort basé sur l'adresse spécifiée
@@ -57,24 +63,29 @@ with open("../data/spells.yml", 'r') as stream:
 def findSpell(url):
     url = url.lower()
     for s in sorts:
-        if url in s['Référence'].lower():
+        if url in s['reference'].lower():
             return s
     print("Not found: " + url)
-    exit(1)
+    ## Ne pas quitter : permet de continuer tout en affichant les sorts en erreur pour traiter au moins ceux qui ont été trouvés
 
 ##
 ## Ajoute une classe au sort (niveau)
 ##
 def addSpellLevel(classe, level, spell):
-    for el in spell['Niveau']:
-        # check if spell already listed for given class
-        if el['Class'] == classe:
-            if el['Level'] != level:
-                print("Something wrong with spell %s" % spell['Nom'])
-                #exit(1)
-                
-            return
-    spell['Niveau'].append({'Class': classe, 'Level': level})
+    try:
+        for el in spell['niveau']:
+            # check if spell already listed for given class
+            if el['Class'] == classe:
+                if el['Level'] != level:
+                    print("Something wrong with spell %s" % spell['nom'])
+                    ## Ne pas quitter : permet de continuer tout en affichant les sorts en erreur pour traiter au moins ceux qui ont été trouvés
+                    
+                return
+        spell['niveau'].append({'Class': classe, 'Level': level})
+    except:
+        pass
+        ## Ne pas quitter : permet de continuer tout en affichant les sorts en erreur pour traiter au moins ceux qui ont été trouvés
+
 
 ##
 ## Transforme la liste en string (format final pour l'import)
@@ -89,7 +100,7 @@ def levelToString(liste):
 
 # réinitialiser les niveaux
 for s in sorts:
-    s['Niveau'] = []
+    s['niveau'] = []
 
 # itération sur chaque page
 for data in URLs:
@@ -143,9 +154,7 @@ addSpellLevel("Ens/Mag", 7, spell)
 
 # initialiser les niveaux
 for s in sorts:
-    s['Niveau'] = levelToString(s['Niveau'])
-    #print(s['Niveau'])
+    s['niveau'] = levelToString(s['niveau'])
     
-print("Fusion avec fichier YAML existant...")
-HEADER = ""
-mergeYAML("../data/spells.yml", MATCH, FIELDS, HEADER, sorts)
+print("Fusion avec fichier NeDB existant...")
+mergeNedb(db, MATCH, FIELDS, sorts)

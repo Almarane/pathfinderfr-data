@@ -8,8 +8,9 @@ import html
 import re
 from bs4 import BeautifulSoup
 from lxml import html
+import hashlib
 
-from libhtml import jumpTo, html2text, getValidSource, mergeYAML
+from libhtml import jumpTo, html2text, html2simplehtml, getValidSource, mergeYAML, mergeNedb
 
 ## Configurations pour le lancement
 MOCK_LIST = None
@@ -43,13 +44,18 @@ URLs = [{'URL': "http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Liste%20des%20
         {'URL': "http://www.pathfinder-fr.org/Wiki/Pathfinder-RPG.Sorts%20de%20spirite.ashx", 'list': True},
         ]
 
-FIELDS = ['Nom', 'École', 'Niveau', 'Portée', 'Cible ou zone d\'effet', 'Temps d\'incantation', 'Composantes', 'Durée', 'Jet de sauvegarde', 'Résistance à la magie', 'Description', 'Source', 'Référence' ]
+FIELDS = ['Nom', 'École', 'Niveau', 'Portée', 'Cible ou zone d\'effet', 'Temps d\'incantation', 'Composantes', 'Durée', 'Jet de sauvegarde', 'Résistance à la magie', 'Description', 'DescriptionHTML', 'Source', 'Référence' ]
 MATCH = ['Référence']
 IGNORE = ['Source']
+
+FIELDSNEDB = ['nom', 'ecole', 'niveau', 'portee', 'cible', 'tempsIncantation', 'composantes', 'duree', 'jds', 'rm', 'description', 'descriptionHTML', 'source', 'reference', '_id' ]
+MATCHNEDB = ['reference']
+IGNORENEDB = ['source', '_id']
 
 
 
 liste = []
+listeNedb = []
 
 print("Extraction des sorts...")
 
@@ -74,9 +80,70 @@ for u in URLs:
 #
 def extractText(list):
     text = ""
+    html = ""
     for el in list:
         text += html2text(el)
-    return text
+        html += html2simplehtml(el)
+    html = re.sub('(?:\n|\r|\t)', '', re.sub('(?:<p>\s*</p>)+', '', re.sub('<p>\s*<table>', '<table>', re.sub('</table>\s*</p>', '</table>', re.sub('(?:<p>\s*)+', '<p>', re.sub('(?:</p>\s*)+', '</p>', "<p>" + html + "</p>"))))))
+    return [text, html]
+
+def convert4nedb(sort):
+    sortNedb = {}
+
+    sortNedb[u'nom']=sort[u'Nom']
+    sortNedb[u'reference']=sort[u'Référence']
+    sortNedb[u'source']=sort[u'Source']
+    sortNedb['description']=sort['Description']
+    sortNedb['descriptionHTML']=sort['DescriptionHTML']
+
+    try:
+        sortNedb['cible']=sort["Cible ou zone d'effet"]
+    except:
+        pass
+
+    try:
+        sortNedb['composantes']=sort["Composantes"]
+    except:
+        pass
+
+    try:
+        sortNedb['duree']=sort["Durée"]
+    except:
+        pass
+
+    try:
+        sortNedb['jds']=sort["Jet de sauvegarde"]
+    except:
+        pass
+    
+    try:
+        sortNedb['niveau']=sort["Niveau"]
+    except:
+        pass
+    
+    try:
+        sortNedb['portee']=sort["Portée"]
+    except:
+        pass
+    
+    try:
+        sortNedb['rm']=sort["Résistance à la magie"]
+    except:
+        pass
+    
+    try:
+        sortNedb['tempsIncantation']=sort["Temps d'incantation"]
+    except:
+        pass
+    
+    try:
+        sortNedb['ecole']=sort["École"]
+    except:
+        pass
+
+    
+    #sortNedb['_id'] = int(hashlib.md5(sortNedb['reference'].encode('utf-8')).hexdigest()[:8],16)
+    return sortNedb
 
 # itération sur chaque page
 for l in listSorts:
@@ -128,7 +195,7 @@ for l in listSorts:
         key = key.replace("’","'")
 
         if key in FIELDS:
-            sort[key]=text.strip()
+            sort[key]=re.sub(';\s*$', '', text).strip()
             descr = s.next_siblings
             text = ""
         else:
@@ -136,11 +203,15 @@ for l in listSorts:
 
     # lire la description
     text = extractText(descr)
-    sort['Description']=text.strip()
+    sort['Description']=text[0].strip()
+    sort['DescriptionHTML']=text[1].strip()
     
     # ajouter sort
     liste.append(sort)
-    
+
+    # conversion du sort pour nedb
+    listeNedb.append(convert4nedb(sort))
+
     #if MOCK_SORT:
     #    break
 
@@ -149,3 +220,7 @@ print("Fusion avec fichier YAML existant...")
 HEADER = ""
 
 mergeYAML("../data/spells.yml", MATCH, FIELDS, HEADER, liste, IGNORE)
+
+print("Fusion avec fichier NdDB existant...")
+
+mergeNedb("../data/sorts.db", MATCHNEDB, FIELDSNEDB, listeNedb, IGNORENEDB)

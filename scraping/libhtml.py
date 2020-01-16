@@ -3,7 +3,9 @@
 
 import urllib.parse
 import yaml
+import json
 import re
+from bs4 import BeautifulSoup
 
 #
 # cette fonction permet de convertir un tableau en texte
@@ -77,6 +79,29 @@ def table2text(table):
 
     return text
 
+#
+# cette fonction nettoie un tableau pour en faire un html plus simple
+#
+def table2html(table):
+    if table is None:
+        return ""
+    text = "<table>"
+    first = True
+    for tr in table.find_all('tr'):
+        if tr.has_attr('class') and tr['class'][0] == "titre":
+            typeTr = "th"
+        else:
+            typeTr = "tr"
+        
+        text += "<" + typeTr + ">"
+        for td in tr.find_all('td'):
+            text += "<td>" + html2simplehtml(td) + "</td>"
+        
+        text += "</" + typeTr + ">"
+
+    text += "</table>"
+    text = re.sub('(?:<td>)+', '<td>', re.sub('(?:</td>)+', '</td>', text))
+    return text
 
 def html2text(htmlEl, skipDiv = True):
     if htmlEl.name is None or htmlEl.name == 'a':
@@ -120,6 +145,53 @@ def html2text(htmlEl, skipDiv = True):
     else:
         return ""
 
+def html2simplehtml(htmlEl):
+    if htmlEl.name is None or htmlEl.name == 'a':
+        if htmlEl.string is None:
+            return ""
+        else:
+            return htmlEl.string
+    # ignore <sup> et <img>
+    elif htmlEl.name == 'sup' or htmlEl.name == 'img':
+        return ""
+    elif htmlEl.name == 'div':
+        soup = BeautifulSoup("<p></p>", features="lxml")
+        tag = soup.p
+
+        text = ""
+        for c in htmlEl.children:
+            text += html2simplehtml(c)
+        
+        tag.append(text)
+        return repr(tag)
+    # corrige les descendants de <i>, <b> et <td>
+    elif htmlEl.name == 'i' or htmlEl.name == 'b' or htmlEl.name == 'td':
+        text = ""
+        for c in htmlEl.children:
+            text += html2simplehtml(c)
+        
+        htmlEl.string = text
+        return repr(htmlEl)
+    elif htmlEl.name == 'br':
+        return "</p><p>"
+    elif htmlEl.name == 'center':
+        return table2html(htmlEl.find('table'))
+    elif htmlEl.name == 'ul':
+        text = "</p><ul>"
+        for li in htmlEl.find_all('li'):
+            text += "<li>" + li.text + "</li>"
+        return text + "</ul><p>"
+    elif htmlEl.name == "h2" or htmlEl.name == "h3":
+        soup = BeautifulSoup("<h2></h2>", features="lxml")
+        tag = soup.h2
+        tag.append(htmlEl.text)
+        return repr(tag)
+    elif htmlEl.name == "abbr":
+        return htmlEl.text
+    elif htmlEl.name == "img":
+        return ""
+    else:
+        return repr(htmlEl)
   
 #
 # cette fonction nettoie la valeur d'une propriété
@@ -373,13 +445,16 @@ def cleanName(name):
     return cleanText(name)
 
 def cleanNameForMatch(name):
-    name = cleanText(name)
-    #m = re.search('(.*)\([a-zA-Z]+\)', name)
-    #if m:
-    #    return m.group(1).strip()
-    #else:
-    #    return name
-    return name.lower()
+    try:
+        name = cleanText(name)
+        #m = re.search('(.*)\([a-zA-Z]+\)', name)
+        #if m:
+        #    return m.group(1).strip()
+        #else:
+        #    return name
+        return name.lower()
+    except:
+        return name
 
 #
 # cette fonction extait une propriété (format BD type 2)
@@ -451,11 +526,11 @@ def mergeYAML(origPath, matchOn, order, header, yaml2merge, ignoreFields = []):
     liste = []
     
     # lire le copyright (à intégrer en haut de chaque fichier)
-    with open('../data/COPYRIGHT.TXT', 'r') as file:
+    with open('../data/COPYRIGHT.TXT', 'r', encoding='utf8') as file:
         COPY = file.read()
     
     # lire le fichier original avec lequel fusionner
-    with open(origPath, 'r') as stream:
+    with open(origPath, 'r', encoding='utf8') as stream:
         try:
             liste = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
@@ -534,5 +609,119 @@ def mergeYAML(origPath, matchOn, order, header, yaml2merge, ignoreFields = []):
     result = result.replace("EMPTY: ''",'')
     
     # écrire le résultat dans le fichier d'origine
-    outFile = open(origPath, "w")
+    outFile = open(origPath, "w", encoding='utf8')
     outFile.write(COPY + header + result)
+
+#
+# cette fonction fusionne un Nedb avec un existant en respectant les règles suivantes
+# - l'ordre des champs
+# - un retour à la ligne (ligne vide) entre chaque entrée
+# - insertion uniquement à la fin
+# - aucune suppression
+# - modification des existantes (merge) sur la base du nom
+#
+def mergeNedb(origPath, matchOn, order, yaml2merge, ignoreFields = []):
+    liste = []
+
+    try:
+        nedbFile = open(origPath, 'r', encoding='utf8')
+    except IOError:
+        nedbFile = open(origPath, 'w', encoding='utf8')
+        nedbFile = open(origPath, 'r', encoding='utf8')
+    
+    # lire le fichier original avec lequel fusionner
+    with nedbFile as stream:
+        for line in stream:
+            if line.strip():
+                liste.append(json.loads(line))
+    
+    try:
+        index = max(node["_id"] for node in liste) + 1
+    except:
+        index = 1
+
+    # préparer les champs pour le tri
+    FIELDS = {}
+    idx = 1
+    for o in order:
+        FIELDS[o]="{:02d}{:s}".format(idx,o)
+        idx += 1
+
+    # s'assurer que toutes les nouvelles entrées on un "nom"
+    for el in yaml2merge:
+        if not "nom" in el:
+            print("Entrée invalide (ne contient pas de nom)" % el)
+            print(el)
+            exit(1)
+            
+    # fusionner les listes
+    for el in yaml2merge:
+        idx = 0
+        found = False
+        for elOrig in liste:
+            match = True
+            # s'assurer que tous les champs correspondent
+            for m in matchOn:
+                val1 = cleanNameForMatch(el[m]) if m in el else ""
+                val2 = cleanNameForMatch(elOrig[m]) if m in elOrig else ""
+                if val1 != val2:
+                    match = False
+                    break
+            if match:
+                #print("Match found for %s with %s" % (el['Nom'], liste[idx]['Nom']))
+                old = liste[idx]
+                liste[idx] = el
+                for f in ignoreFields:
+                    liste[idx][f] = old[f]
+                liste[idx]['first'] = True
+                found = True
+                break
+            idx += 1
+        
+        if not found:
+            print("Élément '%s' ajouté" % el['nom'])
+            el['_id'] = index
+            index += 1
+            el['first'] = True
+            liste.append(el)
+    
+    
+
+    # préparer la liste finale (tri, retour de ligne, etc.)
+    retListe = []
+    for el in liste:
+        newEl = {}
+        
+        # change field keys to apply sorting
+        for k in el.keys():
+            if k == 'first':
+                continue
+            if k in FIELDS.keys():
+                newEl[FIELDS[k]]=el[k]
+            else:
+                print("Champs %s ne peut être trié!" % k)
+                print(el)
+                exit(1)
+        
+        newEl['EMPTY'] = ""
+        retListe.append(newEl)
+
+    
+    #result = yaml.safe_dump(retListe,default_flow_style=False, allow_unicode=True)
+    #result = json.dumps(retListe, ensure_ascii=False)
+
+    result = ""
+
+    for line in retListe:
+        result += json.dumps(line, ensure_ascii=False) + "\n"
+
+    #print(result)
+    for f in FIELDS:
+        result = result.replace(FIELDS[f], f)
+    result = result.replace(", \"EMPTY\": \"\"",'')
+    #result = re.sub('}, {', '}\n{', result)
+    #result = re.sub('^\[', '', result)
+    #result = re.sub(']$', '', result)
+    # écrire le résultat dans le fichier d'origine
+    outFile = open(origPath, "w", encoding='utf8')
+    outFile.write(result)
